@@ -1,8 +1,0 @@
-package dev.lightdream.gtxcs;
-
-public class Bad1 {
-    public static void main(String[] args) {
-        String str = "CS1331ROCKS";
-        System.out.println((str.length() - 5) + " is 11 - 5");
-    }
-}

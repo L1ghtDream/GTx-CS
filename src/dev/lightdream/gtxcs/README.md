@@ -1,213 +1,221 @@
+Problem Description
 Hello! Please make sure to read all parts of this document carefully.
 
-You and your group of astronaut friends are on a spaceship! Fun! However, you are not completely sure you can trust some of them... kinda sus... There seems to be a few Impostors onboard, trying to sabotage you and your crew. Your job is to analyze the players and find the impostors before it is too late! The crewmates win if all of the impostors are frozen, and the impostors win if they hold a majority of the unfrozen players (greater than or equal to half). In this assignment, you will be given a partially filled Player.java (see below for more details), and will create Impostor.java, Crewmate.java, RedAstronaut.java, and BlueAstronaut.java. These classes will simulate the gameplay. In addition, you will create a Gameplay.java file that will not be turned in, serving as a driver that can be used to test your code and check its output. To complete this assignment, you will use your knowledge of abstract classes and interfaces.
+In this assignment, you will be applying your knowledge of abstract classes, inheritance, polymorphism, file I/O and exceptions. For this homework, you will be simulating a veterinary clinic. You will create a Pet.java, Dog.java, Cat.java, InvalidPetException.java, and a Clinic.java file; the Clinic.java file will treat and keep a record of the Pet patients it receives!
 
 Solution Description
-You will create two interfaces, one abstract class, and two concrete subclasses. You will be creating a number of fields and methods for each file. Based on the description given for each variable and method, you will have to decide whether or not the variables/method should be static, and whether it should be private or public. To make these decisions, you should carefully follow the guidelines on these keywords as taught in the modules.
+Create files Pet.java, Dog.java, Cat.java, InvalidPetException.java and Clinic.java. Each file will have instance fields, methods, and constructors.
 
-Hint: A lot of the code you will write for this assignment can be reused. Try to think of what keywords you can use that will help you! You should be able to put @Override on the line before the method header for any methods you override.
+Pet.java
+This class represents any pet that would seek consultation from the clinic.
 
-Impostor.java
-This file defines an interface with the name Impostor. Impostors will be able to mess with Players through sabotage and freeze tagging them.
+Variables:
+String name
+double health
+A percentage value ranging from 0.0 to 1.0
+int painLevel
+Ranges from 1 to 10
+Constructor:
+Pet(String name, double health, int painLevel)
+health
+If health passed in is greater than 1.0, set health to 1.0
+If health passed in is less than 0.0, set health to 0.0
+painLevel
+If painLevel passed in is greater than 10, set pain level to 10
+If painLevel passed in is less than 1, set pain level to 1
+Methods:
+getters for all instance fields, which should be camelCase with the variable name, e.g. a variable named hello should have a getter getHello()
+int treat():
+Should be an abstract method that returns the time taken (in minutes) to treat the pet
+void speak():
+This method prints “Hello! My name is “ with the pet’s name
+If painLevel is greater than 5 prints the message in UPPERCASE
+boolean equals(Object o):
+Two Pet objects are equal if their names are the same
+Note: You can assume you will not encounter two pets with the same name
+heal():
+Should be protected to prevent access by external classes
+Sets health to 1.0
+Sets painLevel to 1
+Dog.java
+Since a Dog is also a Pet, this class must inherit from parent class Pet. This class is concrete.
 
-Methods
-freeze(Player p)
-Abstract method that takes in a Player object and does not return anything
-(Note: any class that implements Impostor must provide a method definition for this method)
-sabotage(Player p)
-Abstract method that takes in a Player object and does not return anything
-(Note: any class that implements Impostor must provide a method definition for this method)
-Crewmate.java
-This file defines an interface with the name Crewmate.
+Variables:
+double droolRate
+Constructors:
+Dog(String name, double health, int painLevel, double droolRate)
+droolRate - If droolRate is less than or equal to zero, set drool rate to 0.5
+Dog(String name, double health, int painLevel)
+Default droolRate is 5.0
+Methods:
+getters for all instance fields, which should be camelCase with the variable name, e.g. a variable named hello should have a getter getHello()
+int treat():
+Should heal()
+Returns the time taken (in minutes) to treat the pet. Round values up.
+if droolRate is less than 3.5, the minutes for treatment is (painLevel*2)/health
+if droolRate is in between 3.5 and 7.5 inclusive, the minutes for treatment is painLevel/health
+if droolRate is greater than 7.5, the minutes for treatment is painLevel/(health*2)
+void speak():
+Calls parent method
+Prints “bark” number of times of the painLevel
+e.g.: if painLevel = 3
+Prints “bark bark bark”
+ALL UPPERCASE if painLevel is greater than 5, not inclusive
+boolean equals(Object o):
+Uses the equals() method in Pet as part of the decision-making with the additional condition of droolRate being the same
+Cat.java
+Since a Cat is also a Pet, this class must inherit from parent class Pet. This class is concrete.
 
-Methods
-completeTask()
-Abstract method that does not take in anything and does not return anything
-(Note: any class that implements Crewmate must provide a method definition for this method)
-Player.java
-This class represents a player in the game. You must not be able to create an instance of this class (Hint: there is a keyword that prevents us from creating instances of a class). Players implement the Comparable interface with the proper type parameter.
+Variables:
+int miceCaught
+Constructors:
+Cat(String name, double health, int painLevel, int miceCaught)
+miceCaught
+If miceCaught passed in is less than 0, set miceCaught to 0
+Cat(String name, double health, int painLevel)
+Default miceCaught is 0
+Methods:
+getters for all instance fields, which should be camelCase with the variable name, e.g. a variable named hello should have a getter getHello()
+int treat():
+Should heal()
+Returns the time taken (in minutes) to treat the pet. Round all values up.
+if number of miceCaught is less than 4, the minutes for treatment is equal to (painLevel *2)/health
+if miceCaught is in between 4 and 7 inclusive the minutes for treatment equals painLevel/health
+if miceCaught is greater than 7, the minutes for treatment equals painLevel/(health*2)
+void speak():
+Calls parent method
+Prints “meow” number of times of miceCaught
+Eg: if miceCaught = 3
+Print “meow meow meow”
+ALL UPPERCASE if painLevel is greater than 5, not inclusive
+boolean equals(Object o):
+Uses the equals() method in Pet as part of the decision-making with the additional condition of miceCaught being the same
+InvalidPetException.java
+An unchecked exception with two constructors
 
-A portion of this class was given to you. There are 2 methods (as follows) that you need to implement. Make sure to code where there are comments that say YOUR CODE HERE. Javadocs have been provided to guide you.
-
-Variables (These have been provided to you)
-String name – The Player’s name as a String.
-int susLevel – This represents how suspicious a Player is; the higher, the more suspicious.
-boolean frozen – This represents if a Player is frozen, which will affect their ability to participate in some methods below.
-static Player[] players – This is the array of Player objects that have been created. It is always guaranteed to be full by the constructor (no null spaces), so if a Player is created, players becomes larger by one. Frozen players will NOT be removed from this array! (Note: It’s ok move around elements in this array, but don’t add or delete any elements)
-Methods
-Do not create any other methods than those specified. Any extra methods will result in point deductions. All methods must have the proper visibility to be used where it is specified they are used.
-
-emergencyMeeting()
-Any concrete class that extends the Player class must provide a method definition for emergencyMeeting()
-An abstract method for a Player to call an emergency meeting to vote on which Player to freeze
-Does not return anything
-compareTo(Player p)
-Override the compareTo method (You should be able to put @Override on the line before the method header)
-Takes in a Player object and returns an int, adhering to the API contract (Comparable Interface)
-The method body should compare two Player objects based on the susLevel attribute. If the current Player instance’s susLevel is less than the Player passed in, return a negative number. If it is greater, return a positive number. If their susLevel attributes are equal, return 0
-RedAstronaut.java
-This file defines a RedAstronaut, which is a Player and should have all attributes of one. Have RedAstronaut implement the Impostor interface.
+Constructors
+InvalidPetException() has message “Your pet is invalid!”
+InvalidPetException(String s) has message s
+Clinic.java
+This is a class representing the vet clinic.
 
 Variables
-All variables must be not allowed to be directly modified outside the class in which they are declared, unless otherwise stated in the description of the variable. Hint: there is a specific visibility modifier that can do this!
-
-The Red class must have these variables. Do NOT re-declare any of the instance variables declared in Player class:
-
-skill - a String that represents skill of the Red crewmate a String value of either inexperienced, experienced, or expert.
+File patientFile
+File with patient information
+int day
 Constructors
-A constructor that takes in the name, susLevel, and skill and sets all fields accordingly. It must accept the variables in the specified order. Assume that the passed in parameter for skill will be one of the three values, although it may have different capitalization.
-Hint: There is a specified keyword in L12 to access the superclass’s constructor.
-A constructor that takes in just a name and assigns the following default values:
-susLevel: 15
-skill: experienced
+Clinic(File file)
+File that contains patient info - assign to patientFile
+Name
+Type of pet (includes pet info)
+Appointment Info
+timeIn(military time)
+health(before Treatment)
+painLevel(before Treatment)
+TimeOut(military time)
+TimeOut(military time)
+Day initialized to 1
+Clinic(String fileName)
+String includes filename extension – don't add “.csv”
+Chains to the other constructor
 Methods
-Do not create any other methods than those specified. Any extra methods will result in point deductions. All methods must have the proper visibility to be used where it is specified they are used.
+String nextDay(File f) throws FileNotFoundException
+String nextDay(String fileName) throws FileNotFoundException
+Reads File f that contains the name, type of pet, and time of the appointments for the day
+See example file “Appointments.csv” for the format
+Eg: If there was a Cat Chloe, with a miceCaught count of 5, scheduled for 2:30 pm, Chloe’s information in Appointments.csv would look like:
+Chloe,Cat,5,1430
+You will have one file for each different day
+Use a Scanner object to take in user input
+Print “Consultation for [name] the [typeOfPet] at [time].\nWhat is the health of [name]?\n”
+If typeOfPet is not valid (i.e. not a Dog or Cat, case-sensitive) throw InvalidPetException
+Do not catch the exception in your code! The caller of the method should handle the exception.
+Take in user input for health
+If input is not a number, continue prompting user until they provide a number
+Print “On a scale of 1 to 10, how much pain is [name] in right now?\n”
+Take in user input for painLevel
+If input is not a number, continue prompting user until they provide a number
+Call speak()
+Treat pet
+Calculate time out (there exists a method for this)
+Note: Don’t try to read the file and write to it at the same time – this method is intended only to read the file.
+Don’t forget the increment the day!
+Returns a String with patient information to be used when treating patients and updating the file.
+The string being returned should hold the updated information for all patients seen in the day separated by a newline character.
+Each appointment should be formatted as follows:
+[Name],[Species],[DroolRate/MiceCaught],[Day],[EntryTime],[ExitTime],[InitialHealth],[InitialPainLevel]
+E.x.: If there are 2 appointments on day 2:
+Appointment 1 on Day 2:
+Dog Dobie with droolRate 2.7
+Entry time: 1715 (5:15 pm) and Exit time: 1735 (5:35 pm)
+Health was 0.5 and painLevel was 5 before treating
+Appointment 2 on Day 2:
+Cat Marlin with miceCaught 84
+Entry time: 1655 (4:55 pm) and Exit time: 1700 (5:00 pm)
+Health was 0.4 and painLevel was 4 before treating
+The output of nextDay would be:
+Dobie,Dog,2.7,Day 2,1715,1735,0.5,5
+Marlin,Cat,84,Day 2,1655, 1700,0.4,4
 
-emergencyMeeting()
-A Player that is frozen cannot call an emergency meeting.
-Holds a meeting and votes out (freezes) the most suspicious Player, only considering Players that are not frozen
-The player that has the highest susLevel (that is NOT the current impostor calling the meeting) will be accused of being the impostor and will be voted off
-If two players have the same highest susLevel, no player will be voted off.
-Hint: think of an easy way to do this without having to iterate through the entire array. Check the Java API for Arrays for a method you can use
-Make sure to change the frozen variable of the player to true when voting off players (don’t call the freeze method!)
-At the end of the vote, check if the game is over using the provided method in Player.java
-Does not return anything
-freeze(Player p)
-Implements the method provided in the Impostor interface.
-It is not possible to freeze another Impostor, and an Impostor that is frozen cannot attempt to freeze. If the passed in Player is an Impostor, the method should end. Freezing an already frozen Player should also do nothing.
-A freeze is successful if the RedAstronaut’s susLevel is less than the Player’s
-If the freeze is unsuccessful, the RedAstronaut’s susLevel doubles (multiply the current susLevel by 2)
-Remember to change the frozen boolean value for the Crewmate as needed.
-After the freeze attempt, check if the game is over using the provided method in Player.java
-Does not return anything
-sabotage(Player p)
-It is not possible to sabotage another Impostor, and an Impostor that is frozen cannot sabotage. Also, sabotaging a frozen Player should do nothing.
-If the Impostor’s susLevel is under 20, through shifty maneuvers and cunning words, they are able to increase the Crewmate’s susLevel by 50%
-Otherwise, they can only manage to increase the Crewmate’s susLevel by 25%
-(Note: In both cases, the the Crewmate’s susLevel is rounded down to the nearest int value)
-Does not return anything
-equals(Object o)
-Two Red are equal if they both have the same name, frozen, susLevel, and skill
-Returns a boolean
-toString() - returns a String describing RedAstronaut as follows:
-(Note: replace the values in brackets [] with the actual value)
-"My name is [name], and I have a suslevel of [susLevel]. I am currently (frozen / not frozen). I am an [skill] player!”
-If susLevel is greater than 15, return the String in all capital letters.
-You must use the toString() method from the Player class to receive full credit.
-Getters and Setters as necessary.
-BlueAstronaut.java
-This file defines a BlueAstronaut, which is a Player and should have all attributes of one. Have BlueAstronaut implement the Crewmate interface.
+boolean addToFile(String patientInfo)
+Consumes a string representing a single appointment
+Eg. In format:
+[Name],[Species],[DroolRate/MiceCaught],[Day],[EntryTime],[ExitTime],[InitialHealth],[InitialPainLevel]
+Write info to patientFile
+If old patient, only the appointment info should be added to the patient file, which includes:
+Day #
+Time in and time out
+Health and pain
+If new patient, all info should be added to the clinic’s patient file
+Assume the vet will never see two different pets with the same name
+See Patients.csv for an example
+Returns true if the appointment info was successfully written, and false if an error occurs or a checked exception is caught
+Note (cont’d): Don’t try to read the file and write to it at the same time – this method is intended to rewrite the file.
+String addTime(String timeIn, int treatmentTime)
+This method should only be accessible in the Clinic class
+This method should calculate the time the patient’s appointment ends
+Return timeOut
+Remember: timeIn and timeOut should be represented in military time
+You can assume that timeIn and timeOut will NOT go across multiple days (ex. timeIn = “23:30” and timeOut = “00:30”)
+Example Output
+User input is bolded
 
-Variables
-All variables must be not allowed to be directly modified outside the class in which they are declared, unless otherwise stated in the description of the variable. Hint: there is a specific visibility modifier that can do this!
+Example output for this entry: Chloe,Cat,5,1430
 
-The Blue class must have these variables. Do NOT redeclare any instance variables created in the Player class
+Consultation for Chloe the Cat at 1430.
 
-numTasks - the number of tasks that needs to be completed as an integer number
-taskSpeed - the speed at which the astronaut is completing each task as a positive, nonzero integer number
-Constructors
-A constructor that takes in the name, susLevel, numTasks, and taskSpeed and sets all fields accordingly. It must accept the variables in the specified order.
-A constructor that takes in just a name and assigns the following default values:
-susLevel: 15
-numTasks: 6
-taskSpeed: 10
-Methods
-Do not create any other methods than those specified. Any extra methods will result in point deductions. All methods must have the proper visibility to be used where it is specified they are used.
+What is the health of Chloe?
 
-emergencyMeeting()
-A Player that is frozen cannot call an emergency meeting.
-Holds a meeting and votes out (freezes) the most suspicious individual of the Player objects, only considering Players that are not frozen
-The player that has the highest susLevel will be accused of being the impostor and will be voted off (This could be them!)
-If two players have the same highest susLevel, no player will be voted off.
-Hint: think of an easy way to do this without having to iterate through the entire array. Check the Java API for Arrays for a method you can use.
-Make sure to change the frozen variable of the player to true when voting off players (don’t call freeze!)
-At the end of the vote, check if the game is over using the provided method in Player.java
-Does not return anything
-completeTask()
-A BlueAstronaut that is frozen cannot complete tasks.
-If taskSpeed is greater than 20, subtract 2 from numTasks. Otherwise, subtract 1 from numTasks.
-If numTasks falls below 0, set it to 0
-After BlueAstronaut is done with their tasks, meaning numTasks is equal to 0 (only for the first time),
-Print out “I have completed all my tasks”
-Then reduce BlueAstronaut’s susLevel by 50% (round down)
-Does not return anything.
-equals(Object o)
-Two BlueAstronauts are equal if they both have the same name, frozen, susLevel, numTasks, and taskSpeed
-Returns a boolean
-toString() - returns a String describing BlueAstronaut as follows:
-"My name is [name], and I have a suslevel of [susLevel]. I am currently (frozen / not frozen). I have [numTasks] left over.”
-If susLevel is greater than 15, return the String in all capital letters.
-(Note: replace the values in brackets [] with the actual value)
-You must use the toString() method from the Player class to receive full credit.
-Getters and Setters as necessary.
-Gameplay.java
-This Java file is a driver, meaning it will run the simulation. You can also use it to test your code. Here are some basic tests to get you started with Amidst Us. These tests are my no means comprehensive, so be sure to create your own!
+0.6
 
-This is just to show an example of object implementation to see how objects interact with each other. Feel free to play around with different values and method callings, especially using toString to check the values after every step! This will NOT be turned in.
+On a scale of 1 to 10, how much pain is Chloe in right now?
 
-Create a BlueAstronaut with the following fields:
+Six
 
-name = “Bob”, susLevel = 20, numTasks = 6, taskSpeed = 30
-Create a BlueAstronaut with the following fields:
+Please enter a number
 
-name = “Heath”, susLevel = 30, numTasks = 3, taskSpeed = 21
-Create a BlueAstronaut with the following fields:
+On a scale of 1 to 10, how much pain is Chloe in right now?
 
-name = “Albert”, susLevel = 44, numTasks = 2, taskSpeed = 0
-Create a BlueAstronaut with the following fields:
+6
 
-name = “Angel”, susLevel = 0, numTasks = 1, taskSpeed = 0
-Create a RedAstronaut with the following fields:
+HELLO! MY NAME IS CHLOE
 
-name = “Liam”, susLevel = 19, skill = "experienced"
-Create a RedAstronaut with the following fields:
+MEOW MEOW MEOW MEOW MEOW
 
-name = “Suspicious Person”, susLevel = 100, skill = "expert"
-Have the objects do the following:
-
-Have RedAstronaut Liam sabotage BlueAstronaut Bob. After the sabotage:
-Bob should have: susLevel = 30, frozen = false
-Have RedAstronaut Liam freeze RedAstronaut Suspicious Person:
-Nothing should happen
-Have RedAstronaut Liam freeze BlueAstronaut Albert. After the freeze:
-Liam should have: susLevel = 19
-Albert is now frozen
-Have BlueAstronaut Albert call an emergency meeting:
-Nothing should happen since he is frozen
-Have RedAstronaut Suspicious Person call an emergency meeting:
-This will result in a tie between Bob and Heath, so nothing should happen
-Have BlueAstronaut Bob call an emergency meeting:
-Suspicious Person should have: frozen = true
-Have BlueAstronaut Heath complete tasks:
-Heath should have: numTasks = 1
-Have BlueAstronaut Heath complete tasks:
-“I have completed all my tasks” should be printed to console
-Heath should have: numTasks = 0, susLevel = 15
-Have BlueAstronaut Heath complete tasks:
-Nothing should happen
-Have RedAstronaut Liam freeze Angel:
-Angel should have: frozen = false
-Liam should have: susLevel = 38
-Have RedAstronaut Liam sabotage Bob twice:
-Bob should have: susLevel = 46 (30 -> 37 -> 46)
-Have RedAstronaut Liam freeze Bob:
-Bob should have: frozen = true
-Now there are two options going forward
-
-Have BlueAstronaut Angel call emergency meeting:
-Liam should have: frozen = true
-“Crewmates win!” should be printed to console
-Or
-
-Have RedAstronaut Liam call sabotage on Heath 5 times:
-Heath should have: susLevel = 41 (15->18->22->27->33->41)
-Have RedAstronaut Liam freeze Heath:
-Heath should have: frozen = true
-“Impostors win!” should be printed to console
 Reuse your code when possible. Certain methods can be reused using certain keywords.
 
 Allowed Imports
-To prevent trivialization of the assignment, you are only allowed to import java.util.Arrays. You are not allowed to import any other classes or packages.
+To prevent trivialization of the assignment, you are only allowed to import the following classes or packages.
+
+java.util.Scanner;
+
+java.io.File;
+
+java.io.FileNotFoundException;
+
+java.io.IOException;
+
+java.io.PrintWriter;
 
 Feature Restrictions
 There are a few features and methods in Java that overly simplify the concepts we are trying to teach or break our auto grader. For that reason, do not use any of the following in your final submission:
@@ -244,3 +252,4 @@ Open Vocareum in a new window. Keep the edX homework open: Vocareum won't visual
 Select the course CS1331 and follow the instructions to start or continue working on the homework.
 Look for where these four checkboxes appear: Files, README, Terminal, Source. Then, click the checkbox "Files." The README checkbox should uncheck automatically; if it doesn't, uncheck it.
 You can now edit the files in the folder "work." Do not edit any files the extension "class" in the folder. Do not edit any file in any other folder or subfolder (such as "resource," "Submissions," or "workspace"). Do not create any additional files or folders.
+For additional help, please visit the Vocareum information page located in the course information module!
